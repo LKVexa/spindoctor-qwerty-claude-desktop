@@ -1,0 +1,100 @@
+{
+  "$schema": "https://raw.githubusercontent.com/modelcontextprotocol/mcpb/main/schemas/mcpb-manifest-v0.4.schema.json",
+  "manifest_version": "0.4",
+  "name": "spindoctor-qwerty",
+  "display_name": "SpinDoctor Qwerty",
+  "version": "1.1.0",
+  "description": "SpinDoctor 3.1.2 quantum-circuit SIMULATOR for Claude Desktop: q.* scripts, 241 presets, q.folder, theory tests, TXT/PDF reports. Classical, not a quantum computer.",
+  "long_description": "SpinDoctor Qwerty 1.1.0 runs the SpinDoctor 3.1.2 quantum-circuit simulator on your computer as a local MCP server for Claude Desktop.\n\n- Six tools: function table, run q.* scripts, run any of the 241 presets, list presets, read reports, and test a theory (from a file, pasted text, or a summary of the chat you confirm).\n- 1-298 logical qubits per register, 59 per entangled factor; registers wider than 29 qubits sample in basis z only.\n- q.folder runs a folder of .txt/.csv/.json/.qasm/.qasm2/.circuit/.pdf command files (top level, up to 128 files).\n- Every command writes TXT and PDF reports (plus JSON and CSV) into the workspace folder you choose.\n\nHonest limits: this is a classical FP64 simulation. It is not a quantum computer and gives no quantum speed-up or advantage. Memory grows as 2^n x 16 bytes for an entangled n-qubit block. Needs Python 3.8 or newer (standard library only; NumPy optional); nothing is downloaded or installed.",
+  "author": {
+    "name": "RUSSELL PHILIP SMITHSON",
+    "email": "russellsmithson77@outlook.com",
+    "url": "https://github.com/LKVexa"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/LKVexa/spindoctor-qwerty-claude-desktop"
+  },
+  "homepage": "https://github.com/LKVexa/spindoctor-qwerty-claude-desktop",
+  "documentation": "https://github.com/LKVexa/spindoctor-qwerty-claude-desktop#readme",
+  "support": "https://github.com/LKVexa/spindoctor-qwerty-claude-desktop/issues",
+  "icon": "icon.png",
+  "server": {
+    "type": "python",
+    "entry_point": "server/spindoctor_mcp.py",
+    "mcp_config": {
+      "command": "python3",
+      "args": [
+        "${__dirname}/server/spindoctor_mcp.py"
+      ],
+      "env": {
+        "SPINDOCTOR_WORKSPACE": "${user_config.workspace}",
+        "PYTHONUTF8": "1",
+        "PYTHONDONTWRITEBYTECODE": "1"
+      },
+      "platform_overrides": {
+        "win32": {
+          "command": "python"
+        }
+      }
+    }
+  },
+  "tools": [
+    {
+      "name": "spindoctor_run_script",
+      "description": "Run SpinDoctor q.* commands (one per line); returns results and TXT/PDF/JSON/CSV report paths"
+    },
+    {
+      "name": "spindoctor_run_preset",
+      "description": "Run one of the 241 SpinDoctor presets (qc-001..qc-241) with optional overrides"
+    },
+    {
+      "name": "spindoctor_list_presets",
+      "description": "List or filter the 241 SpinDoctor presets"
+    },
+    {
+      "name": "spindoctor_report",
+      "description": "List or read SpinDoctor reports in the workspace"
+    },
+    {
+      "name": "spindoctor_functions",
+      "description": "Show every SpinDoctor function as a Markdown table (Function | What it does | Command to type)"
+    },
+    {
+      "name": "spindoctor_test_theory",
+      "description": "Test a theory from a file, pasted text or a confirmed chat summary with quoted excerpts; writes a TXT/PDF theory test report"
+    }
+  ],
+  "tools_generated": false,
+  "prompts_generated": false,
+  "keywords": [
+    "quantum",
+    "quantum-circuit",
+    "simulator",
+    "spindoctor",
+    "qubits",
+    "presets",
+    "mcp",
+    "qwerty"
+  ],
+  "license": "GPL-3.0-or-later",
+  "compatibility": {
+    "platforms": [
+      "darwin",
+      "win32",
+      "linux"
+    ],
+    "runtimes": {
+      "python": ">=3.8"
+    }
+  },
+  "user_config": {
+    "workspace": {
+      "type": "directory",
+      "title": "SpinDoctor workspace",
+      "description": "Folder for SpinDoctor state and its TXT/PDF/JSON/CSV reports. Theory files you want tested can be anywhere on this computer.",
+      "required": false,
+      "default": "${HOME}/spindoctor-workspace"
+    }
+  }
+}
